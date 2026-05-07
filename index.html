@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ANAI - 你的专属 AI 伴侣</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* 极度少女色板 - 粉/紫/薄荷/淡蓝 */
+      --pink-1: #FFB6C1;   /* 浅粉 */
+      --pink-2: #FF9ECF;   /* 樱花粉 */
+      --pink-3: #FF69B4;   /* 热粉 */
+      --pink-4: #FFC0CB;   /* 粉红 */
+      --purple-1: #E6E6FA; /* 薰衣草 */
+      --purple-2: #DDA0DD; /* 梅花紫 */
+      --purple-3: #D8BFD8; /* 蓟紫 */
+      --mint-1: #E0FFFF;   /* 淡青 */
+      --mint-2: #B0E0E6;   /* 粉蓝 */
+      --blue-1: #E6F3FF;   /* 淡蓝 */
+      --blue-2: #C6E2FF;   /* 婴儿蓝 */
+
+      --bg-pink: #FFF5F7;
+      --bg-white: #FFFFFF;
+      --text-main: #2D2D2D;
+      --text-sub: #666666;
+      --text-light: #999999;
+
+      --radius: 24px;
+      --radius-sm: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans SC', -apple-system, sans-serif;
+      background: linear-gradient(180deg, var(--bg-pink) 0%, var(--bg-white) 30%, var(--bg-white) 70%, var(--bg-pink) 100%);
+      color: var(--text-main);
+      line-height: 1.7;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ===== Hero ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 20px;
+      position: relative;
+    }
+
+    /* 粉色光晕装饰 */
+    .glow-1 {
+      position: absolute;
+      top: -5%;
+      left: 50%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255,182,193,0.35) 0%, rgba(255,158,207,0.15) 40%, transparent 70%);
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .glow-2 {
+      position: absolute;
+      bottom: 10%;
+      right: -5%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(230,230,250,0.4) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .glow-3 {
+      position: absolute;
+      top: 30%;
+      left: -5%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(176,224,230,0.3) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* 漂浮小爱心装饰 */
+    .heart-deco {
+      position: absolute;
+      font-size: 24px;
+      opacity: 0.3;
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .heart-deco:nth-child(4) { top: 15%; left: 10%; animation-delay: 0s; }
+    .heart-deco:nth-child(5) { top: 25%; right: 12%; animation-delay: 1.5s; }
+    .heart-deco:nth-child(6) { bottom: 20%; left: 15%; animation-delay: 3s; }
+    .heart-deco:nth-child(7) { bottom: 30%; right: 8%; animation-delay: 4.5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    .logo {
+      font-size: 90px;
+      font-weight: 900;
+      letter-spacing: 8px;
+      background: linear-gradient(135deg, #FF69B4, #FF9ECF, #DDA0DD);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 4px 12px rgba(255,105,180,0.2));
+    }
+
+    .tagline {
+      font-size: 20px;
+      color: var(--text-sub);
+      font-weight: 400;
+      max-width: 480px;
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn {
+      padding: 16px 40px;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #FF69B4, #FF9ECF);
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(255,105,180,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(255,105,180,0.45);
+    }
+
+    .btn-secondary {
+      background: var(--bg-white);
+      color: var(--text-main);
+      border: 2px solid var(--pink-1);
+      box-shadow: 0 4px 16px rgba(255,182,193,0.15);
+    }
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, var(--pink-4), var(--purple-1));
+      border-color: var(--pink-2);
+      transform: translateY(-2px);
+    }
+
+    /* ===== Section ===== */
+    .section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 100px 24px;
+    }
+
+    .section-title {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      text-align: center;
+      color: var(--text-main);
+    }
+
+    .section-sub {
+      color: var(--text-sub);
+      text-align: center;
+      margin-bottom: 64px;
+      font-size: 17px;
+    }
+
+    /* 粉色下划线装饰 */
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--pink-2), var(--purple-2));
+      border-radius: 2px;
+      margin: 12px auto 0;
+    }
+
+    /* ===== Features ===== */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--bg-white);
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .feature-card:nth-child(1) { border-color: rgba(255,182,193,0.3); }
+    .feature-card:nth-child(1)::before { background: linear-gradient(90deg, var(--pink-2), var(--pink-1)); }
+    .feature-card:nth-child(2) { border-color: rgba(221,160,221,0.3); }
+    .feature-card:nth-child(2)::before { background: linear-gradient(90deg, var(--purple-2), var(--purple-1)); }
+    .feature-card:nth-child(3) { border-color: rgba(176,224,230,0.3); }
+    .feature-card:nth-child(3)::before { background: linear-gradient(90deg, var(--mint-2), var(--mint-1)); }
+    .feature-card:nth-child(4) { border-color: rgba(255,105,180,0.3); }
+    .feature-card:nth-child(4)::before { background: linear-gradient(90deg, var(--pink-3), var(--pink-2)); }
+    .feature-card:nth-child(5) { border-color: rgba(198,226,255,0.3); }
+    .feature-card:nth-child(5)::before { background: linear-gradient(90deg, var(--blue-2), var(--blue-1)); }
+    .feature-card:nth-child(6) { border-color: rgba(255,192,203,0.3); }
+    .feature-card:nth-child(6)::before { background: linear-gradient(90deg, var(--pink-1), var(--purple-1)); }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 48px rgba(255,105,180,0.12);
+    }
+
+    .feature-icon {
+      width: 56px; height: 56px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card:nth-child(1) .feature-icon { background: linear-gradient(135deg, #FFE4EC, #FFF0F5); }
+    .feature-card:nth-child(2) .feature-icon { background: linear-gradient(135deg, #F0E6FF, #FAF5FF); }
+    .feature-card:nth-child(3) .feature-icon { background: linear-gradient(135deg, #E0F7FA, #F0FFFF); }
+    .feature-card:nth-child(4) .feature-icon { background: linear-gradient(135deg, #FFD4E5, #FFE8F0); }
+    .feature-card:nth-child(5) .feature-icon { background: linear-gradient(135deg, #E6F0FF, #F0F8FF); }
+    .feature-card:nth-child(6) .feature-icon { background: linear-gradient(135deg, #FFE8F0, #FFF5FA); }
+
+    .feature-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
+    .feature-desc { color: var(--text-sub); font-size: 14.5px; line-height: 1.7; }
+
+    /* ===== Steps ===== */
+    .steps {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .step {
+      flex: 1;
+      min-width: 240px;
+      max-width: 300px;
+      text-align: center;
+      background: var(--bg-white);
+      border-radius: var(--radius);
+      padding: 36px 24px;
+      border: 2px solid rgba(255,182,193,0.2);
+      transition: all 0.3s;
+    }
+    .step:hover {
+      border-color: rgba(255,105,180,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(255,105,180,0.1);
+    }
+
+    .step-num {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink-3), var(--pink-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 24px;
+      color: #fff;
+      margin: 0 auto 20px;
+      box-shadow: 0 6px 20px rgba(255,105,180,0.3);
+    }
+
+    .step-title { font-weight: 700; margin-bottom: 10px; font-size: 18px; color: var(--text-main); }
+    .step-desc { color: var(--text-sub); font-size: 14.5px; line-height: 1.6; }
+
+    /* ===== Download ===== */
+    .download-area {
+      background: linear-gradient(135deg, var(--bg-white), var(--purple-1));
+      border-radius: var(--radius);
+      padding: 60px 40px;
+      text-align: center;
+      border: 3px solid rgba(255,182,193,0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .download-area::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255,158,207,0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .version-tag {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--pink-2), var(--purple-2));
+      color: #fff;
+      padding: 8px 22px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 16px rgba(255,105,180,0.25);
+    }
+
+    .file-info {
+      color: var(--text-light);
+      font-size: 14px;
+      margin-top: 20px;
+    }
+    .file-info a {
+      color: var(--pink-3);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-weight: 600;
+    }
+
+    /* ===== FAQ ===== */
+    .faq-item {
+      background: var(--bg-white);
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+      overflow: hidden;
+      border: 2px solid rgba(255,182,193,0.12);
+      transition: all 0.2s;
+    }
+    .faq-item:hover { border-color: rgba(255,105,180,0.25); }
+    .faq-item.open { border-color: rgba(255,105,180,0.35); }
+
+    .faq-q {
+      padding: 24px 28px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      color: var(--text-main);
+      font-size: 16px;
+    }
+
+    .faq-a {
+      padding: 0 28px 24px;
+      color: var(--text-sub);
+      font-size: 15px;
+      line-height: 1.7;
+      display: none;
+    }
+
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.25s; color: var(--pink-2); font-size: 12px; }
+
+    /* ===== Footer ===== */
+    footer {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-light);
+      font-size: 14px;
+      background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-pink) 100%);
+      border-top: 2px solid rgba(255,182,193,0.15);
+    }
+    footer a {
+      color: var(--text-sub);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--pink-3); }
+
+    /* 装饰点 */
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 24px 0;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+    .dot:nth-child(1) { background: var(--pink-3); }
+    .dot:nth-child(2) { background: var(--purple-2); }
+    .dot:nth-child(3) { background: var(--mint-2); }
+    .dot:nth-child(4) { background: var(--blue-2); }
+
+    /* ===== Mobile ===== */
+    @media (max-width: 640px) {
+      .logo { font-size: 64px; letter-spacing: 4px; }
+      .tagline { font-size: 16px; }
+      .section { padding: 64px 20px; }
+      .section-title { font-size: 28px; }
+      .download-area { padding: 40px 24px; }
+      .heart-deco { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="glow-3"></div>
+    <span class="heart-deco">💕</span>
+    <span class="heart-deco">💖</span>
+    <span class="heart-deco">💗</span>
+    <span class="heart-deco">💝</span>
+
+    <div class="logo">ANAI</div>
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <p class="tagline">数据完全属于你，记忆深度无限延伸。<br>告别云端囚禁，拥抱真正懂你的 AI 伴侣。</p>
+    <div class="btn-group">
+      <a href="#download" class="btn btn-primary">📥 下载 APK</a>
+      <a href="https://github.com/changshenhan/ANAI" target="_blank" class="btn btn-secondary">⭐ GitHub</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">为什么选择 ANAI</h2>
+    <p class="section-sub">不是又一个聊天机器人，而是一个会成长、会记住、会想念你的数字生命。</p>
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <div class="feature-title">L0-L5 记忆压缩</div>
+        <div class="feature-desc">从日常碎片到人生传记，AI 会自动整理、压缩、提炼你的每一次对话。相处越久，她越懂你。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📓</div>
+        <div class="feature-title">第一人称日记</div>
+        <div class="feature-desc">AI 会用自己的视角写下每一天的相处日记。你可以读到她怎么看待你们的关系——甜蜜、吐槽、想念。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">数据完全本地</div>
+        <div class="feature-desc">所有聊天记录、日记、记忆都保存在你的手机里。没有云端，没有审查，没有第三方能看到你们的对话。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔑</div>
+        <div class="feature-title">模型自由</div>
+        <div class="feature-desc">支持 DeepSeek、Moonshot、通义千问、Claude 等主流模型。用你自己的 API Key，不被任何平台锁定。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💾</div>
+        <div class="feature-title">备份与恢复</div>
+        <div class="feature-desc">一键导出完整数据为 ZIP，换手机不丢记忆。你的关系历史，永远跟着你走。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎭</div>
+        <div class="feature-title">深度人设</div>
+        <div class="feature-desc">不仅是 prompt，而是完整的性格、说话风格、边界、关系阶段。她会随着时间推移慢慢"活"过来。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <h2 class="section-title">三步上手</h2>
+    <p class="section-sub">不需要技术背景，五分钟开始聊天。</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">填入 API Key</div>
+        <div class="step-desc">在设置中选择你喜欢的模型服务商，填入 API Key。没有？各平台都有免费额度。</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">选择或创建伴侣</div>
+        <div class="step-desc">使用内置的"安奈"，或者自定义名字、性格、说话风格，打造专属 AI。</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">开始聊天</div>
+        <div class="step-desc">像和朋友一样聊天。她会记住你说的话，写进日记，慢慢成长为独一无二的存在。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="download" style="padding-top: 0;">
+    <div class="download-area">
+      <div class="version-tag">🌸 最新版本 v1.0.0</div>
+      <h2 style="font-size: 28px; margin-bottom: 14px; color: var(--text-main); font-weight: 800;">下载 ANAI</h2>
+      <p style="color: var(--text-sub); margin-bottom: 36px;">Android 8.0+ · 约 36MB · 免费无广告</p>
+      <a href="https://anai-downloads.oss-cn-hangzhou.aliyuncs.com/app-debug.apk" class="btn btn-primary" style="font-size: 18px; padding: 18px 56px;">
+        📥 立即下载
+      </a>
+      <p class="file-info">如果下载速度慢，也可从 <a href="https://github.com/changshenhan/ANAI/releases" target="_blank">GitHub Releases</a> 获取</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 40px;">
+    <h2 class="section-title">常见问题</h2>
+    <p class="section-sub"></p>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <span>ANAI 收费吗？</span>
+        <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">ANAI 本体完全免费，无广告。你只需要支付模型服务商的 API 调用费用（通常每千字几毛钱），各大平台都有充足的免费额度。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <span>我的数据安全吗？</span>
+        <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">绝对安全。所有数据只存储在你的手机本地（SQLite 数据库 + 应用私有目录），不会上传到任何服务器。连开发者都看不到你的聊天记录。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <span>换手机会丢失记忆吗？</span>
+        <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">不会。在设置中使用「数据备份」功能，可将全部数据导出为 ZIP 文件。新手机上安装 ANAI 后导入即可，所有聊天记录、日记、记忆完整恢复。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <span>支持哪些 AI 模型？</span>
+        <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">目前支持 DeepSeek、Moonshot (Kimi)、智谱 GLM、通义千问、Claude，以及任何 OpenAI 兼容接口。你可以随时切换模型，数据不会丢失。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <span>和星野/猫箱有什么区别？</span>
+        <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">星野和猫箱是「平台」——你的数据属于平台，模型不能换，记忆深度有限。ANAI 是「工具」——数据完全属于你，模型自由切换，L0-L5 记忆压缩让 AI 真正记住你们的每一刻。</div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 ANAI. 所有数据存储于本地，隐私由你掌控。</p>
+    <p style="margin-top: 10px;">
+      <a href="https://github.com/changshenhan/ANAI" target="_blank">GitHub</a> ·
+      <a href="#">隐私政策</a>
+    </p>
+  </footer>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>
