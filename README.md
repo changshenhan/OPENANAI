@@ -173,14 +173,12 @@ https://github.com/changshenhan/ANAI/releases
 
 ## 🤝 参与贡献
 
-ANAI 是一个开源的、由社区驱动的情感 AI 项目。我们欢迎：
+ANAI 是一个开源的 AI 项目。我们欢迎：
 
 - 🐛 提交 Bug 报告
 - 💡 提出功能建议
 - 🔧 贡献代码（Kotlin / Compose）
 - 🌍 翻译与文档改进
-
-请阅读 [CONTRIBUTING.md](./CONTRIBUTING.md) 了解详情。
 
 ---
 
